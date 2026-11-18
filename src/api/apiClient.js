@@ -70,7 +70,7 @@ apiClient.interceptors.response.use(
         }
       }
     } else if (error.code === 'ERR_NETWORK') {
-      message = 'Cannot connect to backend server. Make sure FastAPI server is running on localhost:8000.';
+      message = 'Cannot connect to backend server. Please verify your internet connection or backend status at intervew-backend.onrender.com.';
     } else if (error.code === 'ECONNABORTED' || error.message?.toLowerCase().includes('timeout')) {
       message = 'The AI analysis request took longer than expected. Your application may already be processing; please check your Applications dashboard.';
     } else if (error.request) {
