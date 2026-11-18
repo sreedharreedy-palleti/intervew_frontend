@@ -11,8 +11,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@assignment': path.resolve(__dirname, '../ai_assignment'),
-      '@interview': path.resolve(__dirname, '../ai_interview'),
+      '@assignment': path.resolve(__dirname, './src/ai_assignment'),
+      '@interview': path.resolve(__dirname, './src/ai_interview'),
       '@admin': path.resolve(__dirname, './src/admin'),
       '@user': path.resolve(__dirname, './src/user'),
       '@auth': path.resolve(__dirname, './src/auth'),
