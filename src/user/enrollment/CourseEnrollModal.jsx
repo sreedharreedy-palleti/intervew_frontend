@@ -273,28 +273,16 @@ const CourseEnrollModal = ({ isOpen, onClose, course, onEnrollSuccess }) => {
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                handleReset();
-                onClose();
-              }}
-              style={{ flex: 1 }}
-            >
-              Close
-            </Button>
+          <div style={{ marginTop: '1.5rem' }}>
             <Button
               variant="primary"
               onClick={() => {
                 handleReset();
                 onClose();
-                navigate('/my-courses');
               }}
-              style={{ flex: 1.5 }}
-              icon={<ArrowRight size={16} />}
+              style={{ width: '100%' }}
             >
-              View My Applications
+              Close
             </Button>
           </div>
         </div>

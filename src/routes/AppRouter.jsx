@@ -94,6 +94,8 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/my-courses" element={<Navigate to="/my-enrollments" replace />} />
+        <Route path="/my-applications" element={<Navigate to="/my-enrollments" replace />} />
         <Route path="/download-app" element={<Navigate to="/courses" replace />} />
         <Route path="/404" element={<NotFound />} />
       </Route>

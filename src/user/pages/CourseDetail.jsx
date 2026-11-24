@@ -7,7 +7,7 @@ import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
-import CourseEnrollModal from './CourseEnrollModal';
+import CourseEnrollModal from '../enrollment/CourseEnrollModal';
 import {
   ArrowLeft,
   User,
