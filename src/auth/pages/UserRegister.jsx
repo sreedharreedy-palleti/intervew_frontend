@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from '../../api/authApi';
 import { useAuth } from '../../hooks/useAuth';
@@ -6,7 +6,7 @@ import { useToast } from '../../hooks/useToast';
 import AuthLayout from '../../components/layout/AuthLayout';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
-import { Mail, KeyRound, User, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Mail, KeyRound, User, Lock, ArrowRight, CheckCircle2, RotateCw } from 'lucide-react';
 
 const UserRegister = () => {
   // Step 1: Email, Step 2: OTP, Step 3: Name & Password
@@ -17,11 +17,22 @@ const UserRegister = () => {
   const [password, setPassword] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(0);
   const [error, setError] = useState('');
 
   const { registerUser } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
+
+  // Countdown timer for Resend OTP button
+  useEffect(() => {
+    let timer;
+    if (resendCountdown > 0) {
+      timer = setTimeout(() => setResendCountdown((prev) => prev - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendCountdown]);
 
   // Step 1: Send OTP
   const handleSendOtp = async (e) => {
@@ -34,12 +45,31 @@ const UserRegister = () => {
     try {
       const res = await authApi.sendRegistrationOtp(email);
       toast.success(res.message || `OTP sent to ${email}`);
+      setResendCountdown(30);
       setStep(2);
     } catch (err) {
       setError(err.message || 'Failed to send verification code.');
       toast.error(err.message || 'Failed to send OTP');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Re-trigger / Send OTP again
+  const handleResendOtp = async () => {
+    if (!email || isResending) return;
+    setIsResending(true);
+    setError('');
+
+    try {
+      const res = await authApi.sendRegistrationOtp(email);
+      toast.success(res.message || `Verification OTP sent to ${email}`);
+      setResendCountdown(30);
+    } catch (err) {
+      setError(err.message || 'Failed to send verification code.');
+      toast.error(err.message || 'Failed to send OTP');
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -204,14 +234,29 @@ const UserRegister = () => {
             helperText="Check your inbox or spam folder."
           />
 
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <Button
               type="button"
               variant="secondary"
               onClick={() => setStep(1)}
-              disabled={isLoading}
+              disabled={isLoading || isResending}
             >
               Change Email
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleResendOtp}
+              isLoading={isResending}
+              disabled={resendCountdown > 0}
+              icon={<RotateCw size={15} />}
+              style={{
+                borderColor: 'rgba(99, 102, 241, 0.4)',
+                color: '#c7d2fe',
+                fontWeight: 600,
+              }}
+            >
+              {resendCountdown > 0 ? `Send OTP (${resendCountdown}s)` : 'Send OTP'}
             </Button>
             <Button
               type="submit"
@@ -222,6 +267,26 @@ const UserRegister = () => {
             >
               Verify Code
             </Button>
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+            Didn't receive code?{' '}
+            <button
+              type="button"
+              onClick={handleResendOtp}
+              disabled={isResending || resendCountdown > 0}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: resendCountdown > 0 ? 'var(--text-muted)' : 'var(--primary)',
+                fontWeight: 600,
+                cursor: resendCountdown > 0 ? 'not-allowed' : 'pointer',
+                textDecoration: 'underline',
+                padding: 0,
+              }}
+            >
+              {isResending ? 'Sending...' : resendCountdown > 0 ? `Resend in ${resendCountdown}s` : 'Send OTP again'}
+            </button>
           </div>
         </form>
       )}
