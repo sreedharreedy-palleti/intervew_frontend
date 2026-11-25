@@ -5,8 +5,7 @@ import { useToast } from '../../hooks/useToast';
 import AuthLayout from '../../components/layout/AuthLayout';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
-import { Mail, Lock, ShieldCheck, Sparkles, AlertCircle } from 'lucide-react';
-import { DEMO_CREDENTIALS } from '../../utils/constants';
+import { Mail, Lock, ShieldCheck, AlertCircle } from 'lucide-react';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -39,31 +38,6 @@ const AdminLogin = () => {
     } catch (err) {
       setError(err.message || 'Login failed. Check email and password.');
       toast.error(err.message || 'Authentication failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleQuickFill = () => {
-    setFormData({
-      email: DEMO_CREDENTIALS.ADMIN.email,
-      password: DEMO_CREDENTIALS.ADMIN.password,
-    });
-  };
-
-  const handleInstantAdminLogin = async () => {
-    setIsLoading(true);
-    setError('');
-    try {
-      await loginAdmin({
-        email: DEMO_CREDENTIALS.ADMIN.email,
-        password: DEMO_CREDENTIALS.ADMIN.password,
-      });
-      toast.success('Signed in as Administrator. Welcome to Executive Panel.');
-      navigate('/admin/dashboard', { replace: true });
-    } catch (err) {
-      setError(err.message || 'Quick admin login failed.');
-      toast.error(err.message || 'Access denied');
     } finally {
       setIsLoading(false);
     }
@@ -135,51 +109,6 @@ const AdminLogin = () => {
           Sign In as Administrator
         </Button>
       </form>
-
-      {/* Auto-fill Helper for Backend Seed Admin */}
-      <div
-        style={{
-          marginTop: '1.5rem',
-          padding: '0.75rem',
-          background: 'rgba(139, 92, 246, 0.06)',
-          border: '1px dashed rgba(139, 92, 246, 0.35)',
-          borderRadius: 'var(--radius-md)',
-          textAlign: 'center',
-        }}
-      >
-        <p style={{ fontSize: '0.75rem', color: '#c084fc', marginBottom: '0.4rem', fontWeight: 600 }}>
-          Default Backend Seed Credentials
-        </p>
-        <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-          <code>admin@example.com</code> / <code>YourAdminPassword123!</code>
-        </p>
-        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={handleQuickFill}
-            className="btn btn-ghost btn-sm"
-            style={{ fontSize: '0.78rem', color: '#c084fc' }}
-          >
-            <Sparkles size={13} />
-            <span>Auto-fill Fields</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleInstantAdminLogin}
-            disabled={isLoading}
-            className="btn btn-secondary btn-sm"
-            style={{
-              fontSize: '0.78rem',
-              color: '#fff',
-              background: 'rgba(139, 92, 246, 0.25)',
-              border: '1px solid rgba(139, 92, 246, 0.5)',
-            }}
-          >
-            <ShieldCheck size={13} />
-            <span>1-Click Instant Admin Sign In</span>
-          </button>
-        </div>
-      </div>
     </AuthLayout>
   );
 };

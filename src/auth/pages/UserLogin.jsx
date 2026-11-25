@@ -5,8 +5,7 @@ import { useToast } from '../../hooks/useToast';
 import AuthLayout from '../../components/layout/AuthLayout';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
-import { Mail, Lock, LogIn, Sparkles, ShieldCheck } from 'lucide-react';
-import { DEMO_CREDENTIALS } from '../../utils/constants';
+import { Mail, Lock, LogIn } from 'lucide-react';
 
 const UserLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -58,20 +57,6 @@ const UserLogin = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleQuickFillCandidate = () => {
-    setFormData({
-      email: DEMO_CREDENTIALS.USER.email,
-      password: DEMO_CREDENTIALS.USER.password,
-    });
-  };
-
-  const handleQuickFillAdmin = () => {
-    setFormData({
-      email: DEMO_CREDENTIALS.ADMIN.email,
-      password: DEMO_CREDENTIALS.ADMIN.password,
-    });
   };
 
   return (
@@ -148,42 +133,6 @@ const UserLogin = () => {
           Sign In
         </Button>
       </form>
-
-      {/* Quick Test Demo Helper */}
-      <div
-        style={{
-          marginTop: '1.5rem',
-          padding: '0.75rem',
-          background: 'rgba(255, 255, 255, 0.03)',
-          border: '1px dashed var(--border-medium)',
-          borderRadius: 'var(--radius-md)',
-          textAlign: 'center',
-        }}
-      >
-        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
-          Quick Demo Credentials
-        </p>
-        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={handleQuickFillCandidate}
-            className="btn btn-ghost btn-sm"
-            style={{ fontSize: '0.78rem', color: 'var(--primary)' }}
-          >
-            <Sparkles size={13} />
-            <span>Candidate Demo</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleQuickFillAdmin}
-            className="btn btn-ghost btn-sm"
-            style={{ fontSize: '0.78rem', color: '#c084fc' }}
-          >
-            <ShieldCheck size={13} />
-            <span>Admin Demo</span>
-          </button>
-        </div>
-      </div>
     </AuthLayout>
   );
 };
