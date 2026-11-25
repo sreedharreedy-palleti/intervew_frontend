@@ -5,7 +5,7 @@ import { useToast } from '../../hooks/useToast';
 import AuthLayout from '../../components/layout/AuthLayout';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
-import { Mail, Lock, LogIn } from 'lucide-react';
+import { Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 
 const UserLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -64,7 +64,7 @@ const UserLogin = () => {
       title="Sign In"
       subtitle="Enter your email & password to access your portal"
       footerText="Don't have an account?"
-      footerLinkText="Create candidate account"
+      footerLinkText="Register here"
       footerLinkTo="/register"
     >
       <form onSubmit={handleSubmit}>
@@ -131,6 +131,37 @@ const UserLogin = () => {
           icon={<LogIn size={18} />}
         >
           Sign In
+        </Button>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            margin: '1.25rem 0',
+            color: 'var(--text-muted)',
+            fontSize: '0.8rem',
+          }}
+        >
+          <div style={{ flex: 1, height: '1px', background: 'var(--border-subtle)' }} />
+          <span>or</span>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border-subtle)' }} />
+        </div>
+
+        <Button
+          type="button"
+          variant="secondary"
+          block
+          size="lg"
+          onClick={() => navigate('/register')}
+          icon={<UserPlus size={18} />}
+          style={{
+            background: 'rgba(99, 102, 241, 0.12)',
+            border: '1px solid rgba(99, 102, 241, 0.35)',
+            color: '#a5b4fc',
+          }}
+        >
+          Register New Account
         </Button>
       </form>
     </AuthLayout>
